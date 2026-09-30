@@ -65,4 +65,8 @@
 
 - Studio: https://www.modelscope.cn/studios/gsym236998/tradepilot-demo  
 - Demo: https://gsym236998-tradepilot-demo.ms.show  
-- 本地完整版仍用 `uvicorn`；线上为样例回放。
+- 本地完整版仍用 `uvicorn`；线上为样例回放（Docker 创空间仅 PUT `index.html`）。
+- **2026-10-01 深夜**：已 redeploy P2 静态财务台账（`P2-STATIC-20261001`）  
+  - PUT `deploy-studio/index.html` ✅ → Deploy HTTP 200 → Status Running  
+  - 核验：页脚/健康 pill 含 `P2-STATIC-20261001`；回放后 P2 可见；种子收付→部分核销 + 待申报退税  
+  - 线上无 FastAPI：收付/退税/毛利为浏览器内本地状态演示（完整 API 仍在本地 `8787`）

@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TradePilot · P1 Demo</title>
+  <title>TradePilot · P1+P2 Demo</title>
+  <meta name="tp-build" content="P2-STATIC-20261001" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet" />
@@ -106,14 +107,6 @@ button, .file-btn {
 .secondary {
   background: transparent; border-color: var(--line); color: var(--ink);
 }
-.file-btn { display: inline-flex; align-items: center; }
-
-.paste { margin-top: 1rem; color: var(--muted); }
-.paste textarea {
-  width: 100%; margin: 0.6rem 0; padding: 0.75rem;
-  border: 1px solid var(--line); border-radius: 0.4rem;
-  font: inherit; background: #fffdf8;
-}
 
 .status {
   margin-top: 1rem; padding: 0.85rem 1rem;
@@ -172,7 +165,120 @@ pre {
   margin-right: 0.35rem;
 }
 .file-link:hover { border-bottom-color: var(--accent); }
-.file-row { margin: 0 0 0.5rem; }
+
+.p2-section {
+  margin-top: 1.5rem;
+  animation: rise 0.5s ease both;
+}
+.p2-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.85rem;
+}
+.p2-head h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 1.35rem;
+}
+.lede.tight { margin: 0.35rem 0 0; font-size: 0.9rem; }
+.p2-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+}
+.p2-card {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  padding: 1rem 1.1rem 1.15rem;
+}
+.p2-card.wide { grid-column: 1 / -1; }
+.p2-card h3 {
+  margin: 0 0 0.65rem;
+  font-family: var(--display);
+  font-size: 1.05rem;
+}
+.metric-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-bottom: 0.75rem;
+}
+.metric {
+  min-width: 6.5rem;
+  padding: 0.55rem 0.7rem;
+  background: rgba(23, 107, 138, 0.06);
+  border: 1px solid rgba(197, 210, 219, 0.8);
+}
+.metric span {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-bottom: 0.2rem;
+}
+.metric strong { font-size: 0.95rem; }
+.table-wrap { overflow-x: auto; margin-bottom: 0.65rem; }
+table.mini {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+table.mini th, table.mini td {
+  text-align: left;
+  padding: 0.4rem 0.45rem;
+  border-bottom: 1px solid var(--line);
+}
+table.mini tr.hilite td { background: rgba(42, 143, 110, 0.08); }
+.hint { color: var(--muted); font-size: 0.8rem; margin: 0.35rem 0; }
+.inline-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  align-items: flex-end;
+  margin-top: 0.35rem;
+}
+.inline-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.inline-form input, .inline-form select {
+  font: inherit;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 0.35rem;
+  min-width: 7rem;
+  color: var(--ink);
+  background: #fff;
+}
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.45rem;
+  font-size: 0.78rem;
+  border: 1px solid var(--line);
+  border-radius: 0.25rem;
+}
+.badge.ok { color: var(--accent-2); border-color: #9bcbb8; }
+.badge.warn { color: #a15c12; border-color: #e2b48a; }
+.badge.muted { color: var(--muted); }
+.badge.pending { color: var(--muted); }
+.badge.submitted { color: var(--accent); border-color: #9bbfd0; }
+.badge.received { color: var(--accent-2); border-color: #9bcbb8; }
+.linkish {
+  background: none;
+  border: none;
+  color: var(--accent);
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.actions.wrap { flex-wrap: wrap; }
 
 footer {
   text-align: center; color: var(--muted); font-size: 0.78rem;
@@ -186,8 +292,8 @@ footer {
 
 @media (max-width: 860px) {
   .results { grid-template-columns: 1fr; }
+  .p2-grid { grid-template-columns: 1fr; }
 }
-
   </style>
 </head>
 <body>
@@ -197,17 +303,17 @@ footer {
       <span class="mark">TP</span>
       <div>
         <div class="name">TradePilot</div>
-        <div class="tag">外贸全链路 AI 数字员工 · 创空间演示</div>
+        <div class="tag">外贸全链路 AI 数字员工 · P1 单证 + P2 财务 · 创空间演示</div>
       </div>
     </div>
-    <div id="health" class="pill ok">魔搭演示 · 样例回放</div>
+    <div id="health" class="pill ok">魔搭演示 · 样例回放 · P2-STATIC-20261001</div>
   </header>
   <main>
     <section class="hero-panel">
-      <h1>上传 PO → 合同草稿 → PI / CI / PL</h1>
-      <p class="lede">一源多单演示：回放已用魔搭开源 Qwen 跑通的样例结果。完整 OCR / 真 API / PDF 出单见本地 tradepilot-app。</p>
+      <h1>上传 PO → 合同草稿 → PI / CI / PL → 收付退税</h1>
+      <p class="lede">一源多单后进入 P2：收付汇核销、退税三态台账、订单毛利报表。创空间为静态样例回放；完整 FastAPI 见本地 tradepilot-app。</p>
       <div class="actions">
-        <button type="button" id="btn-sample" class="primary">回放样例全链路</button>
+        <button type="button" id="btn-sample" class="primary">回放样例全链路（含 P2）</button>
       </div>
     </section>
     <section id="status" class="status hidden" aria-live="polite"></section>
@@ -224,10 +330,57 @@ footer {
         <article><h3>审计链（最近）</h3><pre id="audit"></pre></article>
       </div>
     </section>
+
+    <section id="p2" class="p2-section hidden">
+      <div class="p2-head">
+        <div>
+          <h2>P2 财务台账</h2>
+          <p class="lede tight">订单 <code id="p2-order-no">—</code> · 收付汇核销 / 退税三态 / 毛利（静态演示）</p>
+        </div>
+        <div class="actions">
+          <button type="button" id="btn-finance-seed" class="secondary">写入演示收付+退税</button>
+          <button type="button" id="btn-finance-refresh" class="secondary">刷新</button>
+        </div>
+      </div>
+      <div class="p2-grid">
+        <article class="p2-card">
+          <h3>收付汇核销</h3>
+          <div id="p2-settlement" class="metric-row"></div>
+          <div id="p2-payments" class="table-wrap"></div>
+          <form id="pay-form" class="inline-form">
+            <label>收款金额
+              <input type="number" id="pay-amount" step="0.01" min="0.01" placeholder="尾款等" required />
+            </label>
+            <label>方向
+              <select id="pay-direction">
+                <option value="in">收入 (in)</option>
+                <option value="out">支出 (out)</option>
+              </select>
+            </label>
+            <button type="submit" class="primary">登记收付</button>
+          </form>
+        </article>
+        <article class="p2-card">
+          <h3>退税三态台账</h3>
+          <p class="hint">待申报 → 已申报 → 已退税</p>
+          <div id="p2-rebates" class="table-wrap"></div>
+          <div class="actions wrap">
+            <button type="button" id="btn-rebate-create" class="secondary">新建待申报</button>
+          </div>
+        </article>
+        <article class="p2-card wide">
+          <h3>订单毛利报表</h3>
+          <div id="p2-margin" class="metric-row"></div>
+          <div id="p2-margin-table" class="table-wrap"></div>
+          <p class="hint">成本按演示比例（收入 × 72%）估算；退税按 HS 退税率。创空间无后端，操作为本地状态演示。</p>
+        </article>
+      </div>
+    </section>
   </main>
-  <footer><span>评分码参考 T02-W-0081 · 魔搭开源模型实测</span></footer>
+  <footer><span>评分码参考 T02-W-0081 · P1+P2 静态产品 Demo · P2-STATIC-20261001</span></footer>
   <script>window.__SAMPLE__ = {
   "ok": true,
+  "order_id": 1,
   "order_no": "SO-20260930-225252",
   "llm_mode": "api",
   "extraction": {
@@ -290,14 +443,182 @@ footer {
   }
 };</script>
   <script>
-
 const $ = (id) => document.getElementById(id);
+const REVENUE = 16000;
+const COST_RATE = 0.72;
+const REBATE_RATE = 0.13;
+const STATUS_LABEL = {
+  unmatched: "未核销",
+  partial: "部分核销",
+  matched: "已核销",
+  pending: "待申报",
+  submitted: "已申报",
+  received: "已退税",
+};
+
+let currentOrderId = null;
+let paySeq = 1;
+let rebateSeq = 1;
+let financeState = emptyFinance();
+
+function emptyFinance() {
+  return {
+    expected: REVENUE,
+    currency: "USD",
+    payments: [],
+    rebates: [],
+  };
+}
+
+function money(cur, n) {
+  const v = Number(n || 0);
+  return `${cur || "USD"} ${v.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
+}
+
 function showStatus(msg, err = false) {
   const el = $("status");
   el.classList.remove("hidden");
   el.classList.toggle("err", err);
   el.textContent = msg;
 }
+
+function settlementOf() {
+  const received = financeState.payments
+    .filter((p) => p.direction === "in")
+    .reduce((s, p) => s + Number(p.amount || 0), 0);
+  const expected = financeState.expected;
+  const remaining = Math.max(0, expected - received);
+  let status = "unmatched";
+  if (received <= 0) status = "unmatched";
+  else if (remaining <= 0.009) status = "matched";
+  else status = "partial";
+  return {
+    expected_amount: expected,
+    received_amount: received,
+    remaining_amount: remaining,
+    currency: financeState.currency,
+    status,
+    status_label: STATUS_LABEL[status],
+  };
+}
+
+function marginOf() {
+  const revenue = REVENUE;
+  const cost = +(revenue * COST_RATE).toFixed(2);
+  const gross = +(revenue - cost).toFixed(2);
+  const rebate = +(revenue * REBATE_RATE).toFixed(2);
+  return {
+    currency: "USD",
+    revenue,
+    cost,
+    gross_profit: gross,
+    margin_pct: +((gross / revenue) * 100).toFixed(1),
+    rebate_estimate: rebate,
+  };
+}
+
+function settlementBadge(status) {
+  const map = {
+    matched: "badge ok",
+    partial: "badge warn",
+    unmatched: "badge muted",
+  };
+  return map[status] || "badge muted";
+}
+
+function renderFinance() {
+  const s = settlementOf();
+  const cur = s.currency;
+  $("p2-settlement").innerHTML = `
+    <div class="metric"><span>应收</span><strong>${money(cur, s.expected_amount)}</strong></div>
+    <div class="metric"><span>已收</span><strong>${money(cur, s.received_amount)}</strong></div>
+    <div class="metric"><span>待核销</span><strong>${money(cur, s.remaining_amount)}</strong></div>
+    <div class="metric"><span>状态</span><strong class="${settlementBadge(s.status)}">${s.status_label}</strong></div>
+  `;
+
+  const pays = financeState.payments;
+  $("p2-payments").innerHTML = pays.length
+    ? `<table class="mini"><thead><tr><th>方向</th><th>金额</th><th>日期</th><th>匹配</th></tr></thead><tbody>
+      ${pays
+        .map(
+          (p) => `<tr>
+            <td>${p.direction === "in" ? "收入" : "支出"}</td>
+            <td>${money(p.currency, p.amount)}</td>
+            <td>${p.value_date || "—"}</td>
+            <td>${p.matched ? "是" : "—"}</td>
+          </tr>`
+        )
+        .join("")}
+      </tbody></table>`
+    : `<p class="hint">暂无收付记录。可点「写入演示收付+退税」或下方登记。</p>`;
+
+  const rebates = financeState.rebates;
+  $("p2-rebates").innerHTML = rebates.length
+    ? `<table class="mini"><thead><tr><th>状态</th><th>申报金额</th><th>备注</th><th>操作</th></tr></thead><tbody>
+      ${rebates
+        .map((r) => {
+          const st = r.status || "pending";
+          const next =
+            st === "pending"
+              ? { status: "submitted", label: "提交申报" }
+              : st === "submitted"
+                ? { status: "received", label: "确认退税" }
+                : null;
+          const btn = next
+            ? `<button type="button" class="linkish" data-rebate-id="${r.id}" data-next="${next.status}">${next.label}</button>`
+            : `<span class="hint">已完成</span>`;
+          return `<tr>
+            <td><span class="badge ${st}">${STATUS_LABEL[st] || st}</span></td>
+            <td>${money(cur, r.claim_amount)}</td>
+            <td>${r.notes || "—"}</td>
+            <td>${btn}</td>
+          </tr>`;
+        })
+        .join("")}
+      </tbody></table>`
+    : `<p class="hint">暂无退税台账。</p>`;
+
+  $("p2-rebates").querySelectorAll("[data-rebate-id]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const id = Number(btn.getAttribute("data-rebate-id"));
+      const status = btn.getAttribute("data-next");
+      const row = financeState.rebates.find((x) => x.id === id);
+      if (row) {
+        row.status = status;
+        row.status_label = STATUS_LABEL[status];
+        showStatus(`退税已更新 · ${STATUS_LABEL[status]}`);
+        renderFinance();
+      }
+    });
+  });
+
+  const m = marginOf();
+  $("p2-margin").innerHTML = `
+    <div class="metric"><span>收入</span><strong>${money(m.currency, m.revenue)}</strong></div>
+    <div class="metric"><span>成本(演示)</span><strong>${money(m.currency, m.cost)}</strong></div>
+    <div class="metric"><span>毛利</span><strong>${money(m.currency, m.gross_profit)}</strong></div>
+    <div class="metric"><span>毛利率</span><strong>${m.margin_pct.toFixed(1)}%</strong></div>
+    <div class="metric"><span>退税估算</span><strong>${money(m.currency, m.rebate_estimate)}</strong></div>
+  `;
+
+  $("p2-margin-table").innerHTML = `<table class="mini"><thead><tr>
+      <th>订单</th><th>收入</th><th>成本</th><th>毛利</th><th>毛利率</th><th>核销</th>
+    </tr></thead><tbody>
+    <tr class="hilite">
+      <td>${$("p2-order-no").textContent}</td>
+      <td>${money(m.currency, m.revenue)}</td>
+      <td>${money(m.currency, m.cost)}</td>
+      <td>${money(m.currency, m.gross_profit)}</td>
+      <td>${m.margin_pct.toFixed(1)}%</td>
+      <td>${s.status_label}</td>
+    </tr>
+    </tbody></table>
+    <p class="hint">合计毛利 ${money("USD", m.gross_profit)} · 1 单 · 静态演示</p>`;
+}
+
 function renderResult(data) {
   $("results").classList.remove("hidden");
   const steps = [
@@ -306,12 +627,13 @@ function renderResult(data) {
     ["合同草稿", !!data.contract],
     ["PI / CI / PL", (data.generated_docs || []).length >= 3],
     ["一致性校验", !!data.consistency],
+    ["P2 财务", !!data.order_id],
   ];
   const passed = data.consistency && data.consistency.passed;
   $("steps").innerHTML = steps
     .map(([label, ok], i) => {
-      const last = i === steps.length - 1;
-      const cls = last ? (passed ? "done" : "fail") : ok ? "done" : "";
+      const cls =
+        i === 4 ? (passed ? "done" : "fail") : i === 5 ? (ok ? "done" : "") : ok ? "done" : "";
       return `<li class="${cls}">${label}</li>`;
     })
     .join("");
@@ -338,14 +660,93 @@ function renderResult(data) {
     )
     .join("");
   $("audit").textContent = JSON.stringify(data.audit_tail || [], null, 2);
+
+  if (data.order_id) {
+    currentOrderId = data.order_id;
+    financeState = emptyFinance();
+    paySeq = 1;
+    rebateSeq = 1;
+    $("p2").classList.remove("hidden");
+    $("p2-order-no").textContent = data.order_no || `#${data.order_id}`;
+    renderFinance();
+  }
 }
+
+function seedFinance() {
+  if (!currentOrderId) {
+    showStatus("请先回放样例全链路", true);
+    return;
+  }
+  financeState.payments = [
+    {
+      id: paySeq++,
+      direction: "in",
+      amount: 4800,
+      currency: "USD",
+      value_date: "2026-09-20",
+      matched: true,
+    },
+  ];
+  financeState.rebates = [
+    {
+      id: rebateSeq++,
+      status: "pending",
+      status_label: STATUS_LABEL.pending,
+      claim_amount: +(REVENUE * REBATE_RATE).toFixed(2),
+      notes: "HS 9405110000 演示退税",
+    },
+  ];
+  const s = settlementOf();
+  showStatus(`演示财务已写入 · 核销 ${s.status_label} · 退税 待申报`);
+  renderFinance();
+}
+
+function createRebate() {
+  if (!currentOrderId) return;
+  financeState.rebates.push({
+    id: rebateSeq++,
+    status: "pending",
+    status_label: STATUS_LABEL.pending,
+    claim_amount: +(REVENUE * REBATE_RATE).toFixed(2),
+    notes: "手工新建",
+  });
+  showStatus("已新建待申报退税");
+  renderFinance();
+}
+
+function submitPayment(e) {
+  e.preventDefault();
+  if (!currentOrderId) {
+    showStatus("请先回放样例全链路", true);
+    return;
+  }
+  const amount = Number($("pay-amount").value);
+  const direction = $("pay-direction").value;
+  if (!(amount > 0)) {
+    showStatus("请输入有效金额", true);
+    return;
+  }
+  financeState.payments.push({
+    id: paySeq++,
+    direction,
+    amount,
+    currency: "USD",
+    value_date: new Date().toISOString().slice(0, 10),
+    matched: direction === "in",
+  });
+  $("pay-amount").value = "";
+  const s = settlementOf();
+  showStatus(`收付已登记 · ${s.status_label}`);
+  renderFinance();
+}
+
 async function runSample() {
   $("btn-sample").disabled = true;
   showStatus("正在加载魔搭样例回放…");
   try {
     const j = window.__SAMPLE__;
     showStatus(
-      `回放完成 · 订单 ${j.order_no} · 抽取=${(j.extraction && j.extraction.extractor) || ""}`
+      `回放完成 · 订单 ${j.order_no} · 抽取=${(j.extraction && j.extraction.extractor) || ""} · P2 就绪`
     );
     renderResult(j);
   } catch (e) {
@@ -354,8 +755,17 @@ async function runSample() {
     $("btn-sample").disabled = false;
   }
 }
-$("btn-sample").addEventListener("click", runSample);
 
+$("btn-sample").addEventListener("click", runSample);
+$("btn-finance-seed").addEventListener("click", seedFinance);
+$("btn-finance-refresh").addEventListener("click", () => {
+  if (currentOrderId) {
+    renderFinance();
+    showStatus("已刷新财务台账");
+  }
+});
+$("btn-rebate-create").addEventListener("click", createRebate);
+$("pay-form").addEventListener("submit", submitPayment);
   </script>
 </body>
 </html>

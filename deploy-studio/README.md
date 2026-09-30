@@ -7,9 +7,9 @@ Demo：`https://gsym236998-tradepilot-demo.ms.show`
 
 | 文件 | 用途 |
 |------|------|
-| `index.html` | 产品 Demo 静态页 |
-| `styles.css` | 样式 |
-| `app-static.js` | 样例回放逻辑 |
+| `index.html` | 产品 Demo 单文件（内联 CSS/JS/样例；含 P2 财务静态演示） |
+| `styles.css` | 样式（多文件备选；Docker 创空间通常只 PUT index） |
+| `app-static.js` | 样例回放逻辑（备选） |
 | `sample-result.json` | 用魔搭 Qwen 实跑后的样例结果 |
 
 ## 部署（需 Chrome CDP 9222 + 已登录魔搭）
@@ -25,5 +25,5 @@ Demo：`https://gsym236998-tradepilot-demo.ms.show`
 
 ## 与本地完整版差异
 
-静态版：样例回放，无 OCR/上传/真 API。  
-完整版：`tradepilot-app` 本地 `uvicorn`（魔搭 LLM + OCR + PDF）。
+静态版：样例回放 + **P2 财务台账本地状态演示**（无 OCR/上传/真 FastAPI）。  
+完整版：`tradepilot-app` 本地 `uvicorn`（魔搭 LLM + OCR + PDF + P2 API）。
