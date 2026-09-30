@@ -1,0 +1,34 @@
+{
+  "segments": [
+    {
+      "t": "0-15s",
+      "caption": "上传 PO，AI 精准锁定买家 ABC Trading FZE。",
+      "on_screen": "鼠标拖拽 PO 文件至 TradePilot 上传区，文件名高亮显示"
+    },
+    {
+      "t": "15-30s",
+      "caption": "自动解析：LED 5000pcs，金额 USD 16000。",
+      "on_screen": "数据表格字段自动填充，数字部分闪烁强调"
+    },
+    {
+      "t": "30-45s",
+      "caption": "生成销售合同，明确 CIF Jebel Ali 条款。",
+      "on_screen": "合同文档预览窗口弹出，物流条款栏位清晰可见"
+    },
+    {
+      "t": "45-60s",
+      "caption": "同步创建 PI、CI、PL 全套单据。",
+      "on_screen": "PI、CI、PL 三个图标依次旋转生成并列出"
+    },
+    {
+      "t": "60-75s",
+      "caption": "智能风控校验，一致性检查全部通过。",
+      "on_screen": "绿色盾牌图标亮起，显示'Consistency Pass'字样"
+    },
+    {
+      "t": "75-90s",
+      "caption": "一键归档，TradePilot 完成外贸闭环。",
+      "on_screen": "所有文档打包下载，Logo 淡入，出现'Export Complete'"
+    }
+  ]
+}

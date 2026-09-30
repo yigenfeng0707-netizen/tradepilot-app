@@ -1,0 +1,16 @@
+# 报关要素预填表（简化）
+
+**关联订单**：{{ order.order_no }} / PO {{ order.po_no }}
+
+| 项目 | 内容 |
+|------|------|
+| 品名（中文参考） | LED 平板灯 / {{ line.product_name }} |
+| HS 编码 | {{ hs_code }} |
+| 申报要素 | {{ declare_elements }} |
+| 数量及单位 | {{ '%.0f'|format(line.qty) }} {{ line.unit or 'PCS' }} |
+| 成交方式 | {{ order.trade_term }} |
+| 总价 | {{ order.currency }} {{ '%.2f'|format(order.total_amount) }} |
+| 件数 | {{ packages }} CTNS |
+| 毛重/净重 | {{ '%.2f'|format(gross_weight_kg) }} / {{ '%.2f'|format(net_weight_kg) }} KGS |
+
+> P1 预填；正式报关需关务复核。三单匹配预检依赖 PI/CI/PL 一致性校验结果。

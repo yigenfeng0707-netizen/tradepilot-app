@@ -1,0 +1,10 @@
+PURCHASE ORDER
+PO No.: PO-2026-0913
+Buyer: ABC Trading FZE
+Seller: Zhejiang Bright LED Co., Ltd.
+Item: LED Panel Light 60x60
+Qty: 5000 PCS
+Unit Price: USD 3.20
+Total: USD 16,000.00
+Trade Term: ClF Jebel Ali
+Payment: 30% T/T in advance, 70% against B/L copy

@@ -1,0 +1,15 @@
+# PACKING LIST（装箱单）
+
+**PL No.**：PL-{{ order.order_no }}  
+**PO No.**：{{ order.po_no }}  
+**Buyer**：{{ buyer.name if buyer else '' }}
+
+| Description | Qty | Packages | G.W.(KGS) | N.W.(KGS) | Meas.(CBM) |
+|-------------|-----|----------|-----------|-----------|------------|
+| {{ line.product_name }} | {{ '%.0f'|format(line.qty) }} {{ line.unit or 'PCS' }} | {{ packages }} CTNS | {{ '%.2f'|format(gross_weight_kg) }} | {{ '%.2f'|format(net_weight_kg) }} | {{ '%.3f'|format(volume_cbm) }} |
+
+**Total Packages**：{{ packages }} CTNS  
+**Total Qty**：{{ '%.0f'|format(line.qty) }} （须等于 PO 数量）  
+**Shipping Mark**：{{ order.po_no }} / {{ order.destination or 'DEST' }} / MADE IN CHINA
+
+> Derived from Sales Contract single source.

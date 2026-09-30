@@ -1,0 +1,23 @@
+# PROFORMA INVOICE（形式发票）
+
+**PI No.**：PI-{{ order.order_no }}  
+**PO No.**：{{ order.po_no }}  
+**Buyer**：{{ buyer.name if buyer else '' }}  
+**Seller**：{{ seller.name_en if seller and seller.name_en else (seller.name if seller else '') }}
+
+| Description | Qty | Unit Price | Amount |
+|-------------|-----|------------|--------|
+| {{ line.product_name }} | {{ '%.0f'|format(line.qty) }} {{ line.unit or 'PCS' }} | {{ order.currency }} {{ '%.2f'|format(line.unit_price) }} | {{ order.currency }} {{ '%.2f'|format(order.total_amount) }} |
+
+**Trade Term**：{{ order.trade_term }} {{ order.destination or '' }}  
+**Total Amount**：{{ order.currency }} {{ '%.2f'|format(order.total_amount) }}  
+**Payment**：{{ order.payment_terms or '' }}
+
+{% if bank %}
+**Beneficiary Bank**：{{ bank.bank_name }}  
+**Account Name**：{{ bank.account_name }}  
+**Account No.**：{{ bank.account_no }}  
+**SWIFT**：{{ bank.swift_code }}
+{% endif %}
+
+> Derived from Sales Contract single source. Do not edit amounts independently.

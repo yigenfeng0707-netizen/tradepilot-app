@@ -1,0 +1,6 @@
+{
+  "images_ok": 3,
+  "video_ok": false,
+  "note": "submit 的 SUCCEED≠出图完成；须带 X-ModelScope-Task-Type 轮询。排队久可稍后重跑。",
+  "out_dir": "D:\\APPs\\AI模型智能体大赛-余杭\\tradepilot-app\\docs\\media"
+}

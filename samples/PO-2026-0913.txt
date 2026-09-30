@@ -1,0 +1,18 @@
+PURCHASE ORDER
+
+PO No.: PO-2026-0913
+
+Buyer: ABC Trading FZE
+Seller: Hangzhou Yuhang Optoelectronics Co., Ltd.
+
+Item / Description: LED Panel Light
+Qty: 5,000 PCS
+Unit Price: USD 3.20
+Total Amount: USD 16,000.00
+
+Trade Term: CIF Jebel Ali
+Payment: 30% T/T in advance, 70% against B/L copy
+
+Shipping Mark: PO-2026-0913 / JEBEL ALI / MADE IN CHINA
+
+Remarks: Sample PO constructed from public foreign-trade templates (Appendix C).

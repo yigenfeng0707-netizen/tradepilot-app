@@ -1,0 +1,53 @@
+# 购销合同 / Sales Contract（草稿）
+
+**合同编号 Contract No.**：{{ order.order_no | replace('SO-', 'SC-') }}  
+**关联 PO**：{{ order.po_no }}  
+**日期 Date**：自动生成草稿
+
+---
+
+## 一、买卖双方 / Parties
+
+| 角色 | 名称 |
+|------|------|
+| 买方 Buyer | {{ buyer.name if buyer else '—' }}{% if buyer and buyer.name_en and buyer.name_en != buyer.name %} / {{ buyer.name_en }}{% endif %} |
+| 卖方 Seller | {{ seller.name if seller else '—' }}{% if seller and seller.name_en %} / {{ seller.name_en }}{% endif %} |
+
+## 二、标的物 / Subject Matter
+
+| 品名 Description | 数量 Qty | 单位 Unit | 单价 Unit Price | 金额 Amount |
+|------------------|----------|-----------|-----------------|-------------|
+| {{ line.product_name }} | {{ '%.0f'|format(line.qty) }} | {{ line.unit or 'PCS' }} | {{ order.currency }} {{ '%.2f'|format(line.unit_price) }} | {{ order.currency }} {{ '%.2f'|format(order.total_amount) }} |
+
+**合计 Total**：{{ order.currency }} {{ '%.2f'|format(order.total_amount) }}
+
+## 三、贸易术语与目的地 / Trade Term
+
+{{ order.trade_term }} {{ order.destination or '' }}
+
+## 四、付款方式 / Payment Terms
+
+{{ order.payment_terms or 'T/T' }}
+
+## 五、唛头 / Shipping Mark
+
+{{ order.po_no }} / {{ order.destination or 'DEST' }} / MADE IN CHINA
+
+## 六、违约责任 / Breach
+
+任何一方违约应赔偿对方直接损失；争议提交有管辖权法院或约定仲裁机构。
+
+## 七、风险提示（系统自动）
+
+{% if risk_alerts %}
+{% for a in risk_alerts %}
+- ⚠ {{ a }}
+{% endfor %}
+{% else %}
+- 无自动风险告警。
+{% endif %}
+
+---
+
+> 本文件由 TradePilot 合同数字员工生成（AI 草稿，需人工确认后生效）。  
+> 数据源：购销合同唯一数据源（一源多单）。

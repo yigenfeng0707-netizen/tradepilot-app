@@ -1,0 +1,18 @@
+# COMMERCIAL INVOICE（商业发票）
+
+**CI No.**：CI-{{ order.order_no }}  
+**PO No.**：{{ order.po_no }}  
+**Buyer**：{{ buyer.name if buyer else '' }}  
+**Seller**：{{ seller.name_en if seller and seller.name_en else (seller.name if seller else '') }}
+
+| Description | HS Code | Qty | Unit Price | Amount |
+|-------------|---------|-----|------------|--------|
+| {{ line.product_name }} | {{ hs_code }} | {{ '%.0f'|format(line.qty) }} {{ line.unit or 'PCS' }} | {{ order.currency }} {{ '%.2f'|format(line.unit_price) }} | {{ order.currency }} {{ '%.2f'|format(order.total_amount) }} |
+
+**Packages**：{{ packages }} CTNS  
+**Gross Weight**：{{ '%.2f'|format(gross_weight_kg) }} KGS  
+**Net Weight**：{{ '%.2f'|format(net_weight_kg) }} KGS  
+**Trade Term**：{{ order.trade_term }} {{ order.destination or '' }}  
+**Total Amount**：{{ order.currency }} {{ '%.2f'|format(order.total_amount) }}
+
+> Amount = Unit Price × Qty (enforced). Source: confirmed contract/order.

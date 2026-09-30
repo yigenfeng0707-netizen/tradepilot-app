@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TradePilot · P1 Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <header class="top">
+    <div class="brand">
+      <span class="mark">TP</span>
+      <div>
+        <div class="name">TradePilot</div>
+        <div class="tag">外贸全链路 AI 数字员工 · P1 演示</div>
+      </div>
+    </div>
+    <div id="health" class="pill muted">检查中…</div>
+  </header>
+
+  <main>
+    <section class="hero-panel">
+      <h1>上传 PO → 合同草稿 → PI / CI / PL</h1>
+      <p class="lede">一源多单：购销合同为唯一数据源，一致性校验通过后交付全套单据。</p>
+      <div class="actions">
+        <button type="button" id="btn-sample" class="primary">加载样例 PO 并跑通全链路</button>
+        <button type="button" id="btn-sample-img" class="secondary">样例扫描件 OCR→魔搭抽取</button>
+        <label class="secondary file-btn">
+          上传 PO 文件
+          <input type="file" id="file" accept=".txt,.md,.pdf,.csv,.png,.jpg,.jpeg,.webp" hidden />
+        </label>
+      </div>
+      <details class="paste">
+        <summary>或粘贴 PO 文本</summary>
+        <textarea id="paste" rows="8" placeholder="粘贴 Purchase Order 文本…"></textarea>
+        <button type="button" id="btn-paste" class="secondary">从文本跑通</button>
+      </details>
+    </section>
+
+    <section id="status" class="status hidden" aria-live="polite"></section>
+
+    <section id="results" class="results hidden">
+      <div class="rail">
+        <h2>流水线</h2>
+        <ol id="steps" class="steps"></ol>
+        <div id="consistency" class="consistency"></div>
+      </div>
+      <div class="panels">
+        <article>
+          <h3>抽取字段</h3>
+          <pre id="extract"></pre>
+        </article>
+        <article>
+          <h3>合同草稿预览</h3>
+          <pre id="contract"></pre>
+        </article>
+        <article>
+          <h3>交付物</h3>
+          <div id="docs" class="docs"></div>
+        </article>
+        <article>
+          <h3>审计链（最近）</h3>
+          <pre id="audit"></pre>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>评分码参考 T02-W-0081 · 本页为产品 Demo，非初赛方案书静态页</span>
+  </footer>
+  <script src="/static/app.js"></script>
+</body>
+</html>

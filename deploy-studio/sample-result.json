@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "order_no": "SO-20260930-225252",
+  "llm_mode": "api",
+  "extraction": {
+    "extractor": "llm:Qwen/Qwen3.5-35B-A3B",
+    "fields": {
+      "buyer": "ABC Trading FZE",
+      "po_no": "PO-2026-0913",
+      "qty": 5000,
+      "unit_price": 3.2,
+      "total_amount": 16000,
+      "trade_term": "CIF",
+      "destination": "Jebel Ali"
+    },
+    "confidence": {
+      "po_no": "high",
+      "total_amount": "high"
+    }
+  },
+  "contract": {
+    "preview": "# 购销合同 / SALES CONTRACT\n\n**合同编号 Contract No.**：SC-20260930-225252  \n**关联 PO**：PO-2026-0913  \n**日期 Date**：自动生成草稿\n\n---\n\n## 一、买卖双方 / Parties\n\n| 角色 Role | 名称 Name |\n| :--- | :--- |\n| 买方 Buyer | ABC Trading FZE |\n| 卖方 Seller | 杭州余杭光电有限公司 / Hangzhou Yuhang Optoelectronics Co., Ltd. |\n\n## 二、标的物 / Subject Matter\n\n| 品名 Description | 数量 Qty | 单位 Unit | 单价 Unit Price | 金额 Amount |\n| :--- | :--- | :--- | :--- | :--- |\n| LED Panel Light | 5000 | PCS | USD 3.20 | USD 16000.00 |\n\n**合计 Total**：USD 16000.00\n\n## 三、贸易术语与目的地 / Trade Term & Destination\n\nCIF Jebel Ali\n\n## 四、付款方式 / Payment Terms\n\n30% T/T in advance, 70% against B/L copy\n\n## 五、唛头 / Shipping Mark\n\nPO-2026-0913 / Jebel Ali / MADE IN CHINA\n\n## 六、违约责任 / Liability for Breach\n\n任何一方违约应赔偿对方直接损失；争议提交有管辖权法院或约定仲裁机构。\nAny party breaching this contract shall compensate the other for direct losses; disputes shall be submitted to a competent court or agreed arbitration institution.\n\n## 七、风险提示（系统自动） / System Risk Warning\n\n- ⚠ 预付比例 30% ≥ 风险阈值 30%，建议人工复核资金风险。\n\n---\n\n> 本文件由 TradePilot 合同数字员工生成（AI 草稿，需人工确认后生效）。  \n> 数据源：购销合同唯一数据源（一源多单）。",
+    "pdf_path": null
+  },
+  "generated_docs": [
+    {
+      "doc_type": "pi",
+      "path": "data\\outputs\\SO-20260930-225252\\pi.md",
+      "preview": "# PROFORMA INVOICE（形式发票）\n\n**PI No.**：PI-SO-20260930-225252  \n**PO No.**：PO-2026-0913  \n**Buyer**：ABC Trading FZE  \n**Seller**：Hangzhou Yuhang Optoelectronics Co., Ltd.\n\n| Description | Qty | Unit Price | Amount |\n|-------------|-----|------------|--------|\n| LED Panel Light | 5000 PCS | USD 3.20 | USD 16000.00 |\n\n**Trade Term**：CIF Jebel Ali  \n**Total Amount**：USD 16000.00  \n**Payment**：30% T/T in advance, 70% against B/L copy\n\n**Beneficiary Bank**：Bank of China Hangzhou Branch  \n**Account Name**：Hangzhou Yuhang Optoelectronics Co., Ltd.  \n**Account No.**：123456789012  \n**SWIFT**：BKCHCNBJ910\n\n> Derived from Sales Contract single source. Do not edit amounts independently.",
+      "pdf_path": null
+    },
+    {
+      "doc_type": "ci",
+      "path": "data\\outputs\\SO-20260930-225252\\ci.md",
+      "preview": "# COMMERCIAL INVOICE（商业发票）\n\n**CI No.**：CI-SO-20260930-225252  \n**PO No.**：PO-2026-0913  \n**Buyer**：ABC Trading FZE  \n**Seller**：Hangzhou Yuhang Optoelectronics Co., Ltd.\n\n| Description | HS Code | Qty | Unit Price | Amount |\n|-------------|---------|-----|------------|--------|\n| LED Panel Light | 9405110000 | 5000 PCS | USD 3.20 | USD 16000.00 |\n\n**Packages**：100 CTNS  \n**Gross Weight**：1250.00 KGS  \n**Net Weight**：1100.00 KGS  \n**Trade Term**：CIF Jebel Ali  \n**Total Amount**：USD 16000.00\n\n> Amount = Unit Price × Qty (enforced). Source: confirmed contract/order.",
+      "pdf_path": null
+    },
+    {
+      "doc_type": "pl",
+      "path": "data\\outputs\\SO-20260930-225252\\pl.md",
+      "preview": "# PACKING LIST（装箱单）\n\n**PL No.**：PL-SO-20260930-225252  \n**PO No.**：PO-2026-0913  \n**Buyer**：ABC Trading FZE\n\n| Description | Qty | Packages | G.W.(KGS) | N.W.(KGS) | Meas.(CBM) |\n|-------------|-----|----------|-----------|-----------|------------|\n| LED Panel Light | 5000 PCS | 100 CTNS | 1250.00 | 1100.00 | 8.000 |\n\n**Total Packages**：100 CTNS  \n**Total Qty**：5000 （须等于 PO 数量）  \n**Shipping Mark**：PO-2026-0913 / Jebel Ali / MADE IN CHINA\n\n> Derived from Sales Contract single source.",
+      "pdf_path": null
+    },
+    {
+      "doc_type": "customs_elements",
+      "path": "data\\outputs\\SO-20260930-225252\\customs.md",
+      "preview": "# 报关要素预填表（简化）\n\n**关联订单**：SO-20260930-225252 / PO PO-2026-0913\n\n| 项目 | 内容 |\n|------|------|\n| 品名（中文参考） | LED 平板灯 / LED Panel Light |\n| HS 编码 | 9405110000 |\n| 申报要素 | 品牌;型号;功率;尺寸 |\n| 数量及单位 | 5000 PCS |\n| 成交方式 | CIF |\n| 总价 | USD 16000.00 |\n| 件数 | 100 CTNS |\n| 毛重/净重 | 1250.00 / 1100.00 KGS |\n\n> P1 预填；正式报关需关务复核。三单匹配预检依赖 PI/CI/PL 一致性校验结果。",
+      "pdf_path": null
+    }
+  ],
+  "consistency": {
+    "passed": true,
+    "summary": "一致性校验通过"
+  },
+  "audit_tail": [
+    {
+      "action": "export_pdf"
+    }
+  ],
+  "read_meta": {
+    "source_kind": "text"
+  }
+}
