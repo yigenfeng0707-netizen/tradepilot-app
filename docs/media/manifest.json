@@ -1,6 +1,26 @@
 {
-  "images_ok": 3,
-  "video_ok": false,
-  "note": "submit 的 SUCCEED≠出图完成；须带 X-ModelScope-Task-Type 轮询。排队久可稍后重跑。",
-  "out_dir": "D:\\APPs\\AI模型智能体大赛-余杭\\tradepilot-app\\docs\\media"
+  "moli_balance_seen": 3222,
+  "image": {
+    "ok": true,
+    "file": "frame-hero-moli.png",
+    "model": "Qwen/Qwen-Image",
+    "channel": "API-Inference",
+    "task_id": "32b7fcfd-1123-4d5e-be96-9c906d88e87c",
+    "bytes": 531116
+  },
+  "video": {
+    "ok": true,
+    "file": "intro-5s-wan-moli.mp4",
+    "channel": "AIGC网页 /aigc/video-generation（扣魔粒）",
+    "note": "API Wan 当前 Invalid model provider，故走网页通道",
+    "bytes": 792176,
+    "url_host": "muse-ai.oss-cn-hangzhou.aliyuncs.com",
+    "source_frame": "frame-hero-moli.png",
+    "est_cost_shown": 34
+  },
+  "existing_frames": [
+    "frame01-hero.png",
+    "frame02-pipeline.png",
+    "frame03-check.png"
+  ]
 }

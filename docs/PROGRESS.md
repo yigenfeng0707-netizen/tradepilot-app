@@ -23,12 +23,19 @@
 
 ## 仍缺
 
-| 项 | 阻塞 |
+| 项 | 说明 |
 |----|------|
-| 创空间线上更新产品 Demo | 本机 CDP 9222 未开，需复用已登录 Chrome |
-| Qwen-Image 关键帧 / 90s 成片 | 魔搭图任务长时间 RUNNING |
-| 魔搭原生 VL | API 空 choices |
+| 魔搭原生 VL | API 空 choices；已用 OCR+Qwen 替代 |
 | P2 收付退税 | 未做 |
+| 90s 成片剪辑 | 已有分镜 + 魔搭关键帧/5s 片头素材，待 Remotion/录屏合成 |
+
+## 魔搭图/视频（魔粒）
+
+| 能力 | 通道 | 结果 |
+|------|------|------|
+| 生图 | API `Qwen/Qwen-Image`（扣魔粒） | ✅ `docs/media/frame-hero-moli.png` |
+| 视频 | 网页 AIGC（API Wan 现报 Invalid model provider） | ✅ `docs/media/intro-5s-wan-moli.mp4` |
+| 余额 | 顶栏 | 约 **3222** 魔粒（提交前见预计消耗 34） |
 
 ## 创空间部署
 
