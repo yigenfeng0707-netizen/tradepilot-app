@@ -1,6 +1,7 @@
-# TradePilot 产品 Demo（P1 MVP）
+# TradePilot 产品 Demo（P1 + P2 MVP）
 
-外贸全链路 AI 数字员工 · **P1 主链路**：上传 PO → 解析 → 合同草稿 → 一源多单（PI/CI/PL）→ 一致性校验。
+外贸全链路 AI 数字员工 · **P1 主链路**：上传 PO → 解析 → 合同草稿 → 一源多单（PI/CI/PL）→ 一致性校验。  
+**P2 财务**：收付汇核销 · 退税三态台账 · 订单毛利报表（接在 P1 结果下方）。
 
 > 本目录是**可运行产品**，与仓库根目录的初赛方案书终稿（MD/HTML/DOCX/PDF）分离，互不覆盖。  
 > 赛道 2 创业组参考评分码：T02-W-0081。
@@ -14,23 +15,25 @@ python -m venv .venv
 pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 copy .env.example .env
 python scripts\smoke_loop.py
+python scripts\smoke_p2.py
 uvicorn backend.app.main:app --app-dir backend --host 127.0.0.1 --port 8787
 ```
 
 浏览器打开：http://127.0.0.1:8787  
 
 点击「加载样例 PO 并跑通全链路」，或「样例扫描件 OCR→魔搭抽取」，或上传/粘贴 PO。  
-跑通后可在结果区下载 **合同 / PI / CI / PL PDF**。
+跑通后可在结果区下载 **合同 / PI / CI / PL PDF**，并在 **P2 财务台账** 中核销收付、推进退税、查看毛利。
 
 ## 验收
 
 | 方式 | 命令/操作 | 期望 |
 |------|-----------|------|
-| 自动化 | `python scripts/smoke_loop.py` | 打印 `CLOSED_LOOP_OK` |
+| P1 自动化 | `python scripts/smoke_loop.py` | 打印 `CLOSED_LOOP_OK` |
+| P2 自动化 | `python scripts/smoke_p2.py` | 打印 `P2_OK` |
 | 健康检查 | `GET /api/health` | `ok=true`，`demo_ready=true` |
-| 手工 | 前端跑样例 | 合同 + PI/CI/PL + 校验通过 |
+| 手工 | 前端跑样例 → P2 写入演示收付 | 部分核销 → 补尾款已核销；退税三态可点 |
 
-详细用例见 [`docs/P1-验收用例.md`](docs/P1-验收用例.md)。
+详细用例见 [`docs/P1-验收用例.md`](docs/P1-验收用例.md)、[`docs/P2-验收用例.md`](docs/P2-验收用例.md)。
 
 ## 配置（LLM · 魔搭开源模型）
 
@@ -47,6 +50,9 @@ python scripts\smoke_loop.py
 # 扫描件：RapidOCR → 魔搭 Qwen 抽取（期望 IMAGE_LOOP_OK）
 python scripts\smoke_image.py
 
+# P2 财务冒烟
+python scripts\smoke_p2.py
+
 # 可选：用魔搭 Qwen-Image / Wan 生成 90s 分镜素材（扣魔粒，可能排队）
 python scripts\gen_ms_media.py
 ```
@@ -58,12 +64,13 @@ python scripts\gen_ms_media.py
 
 ```
 tradepilot-app/
-  backend/app/          # FastAPI + Agent/服务
-  frontend/             # 交互 Demo 页面
+  backend/app/          # FastAPI + Agent/服务（含 services/finance.py）
+  frontend/             # 交互 Demo 页面（P1 + P2）
   sql/001_schema.sql    # 22 张核心表
   samples/              # 附录 C 样例 PO
   docs/                 # 规格、任务、验收、路演、进度
   scripts/smoke_loop.py
+  scripts/smoke_p2.py
   requirements.txt
   .env.example
 ```
@@ -73,13 +80,16 @@ tradepilot-app/
 - [`docs/P1-规格摘要.md`](docs/P1-规格摘要.md)  
 - [`docs/P1-任务拆解.md`](docs/P1-任务拆解.md)（36 项）  
 - [`docs/P1-验收用例.md`](docs/P1-验收用例.md)  
+- [`docs/P2-验收用例.md`](docs/P2-验收用例.md)  
 - [`docs/演示-90s分镜脚本.md`](docs/演示-90s分镜脚本.md)  
 - [`docs/路演逐字稿-10分钟.md`](docs/路演逐字稿-10分钟.md)  
-- [`docs/PROGRESS.md`](docs/PROGRESS.md)
+- [`docs/PROGRESS.md`](docs/PROGRESS.md)  
+- [`docs/media/TradePilot-demo-90s.mp4`](docs/media/TradePilot-demo-90s.mp4)
 
 ## 与方案书技术栈的关系
 
-方案书口径含 MySQL / Celery / Redis / MinIO / JWT / WebSocket。本 MVP 用 **SQLite + 同步流水线 + 本地文件** 保证可演示、可迭代；表结构已按 22 表对齐，可迁移生产。
+方案书口径含 MySQL / Celery / Redis / MinIO / JWT / WebSocket。本 MVP 用 **SQLite + 同步流水线 + 本地文件** 保证可演示、可迭代；表结构已按 22 表对齐，可迁移生产。  
+P2 财务业务已接表；Celery/Redis/JWT/MinIO/RPA 仍属 **P2+ later**。
 
 ## 安全提示
 

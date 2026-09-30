@@ -1,0 +1,91 @@
+{
+  "name": "TradePilot",
+  "version": "90s-demo",
+  "durationTargetSeconds": 90,
+  "playwrightDir": "frontend",
+  "baseUrl": "http://127.0.0.1:8787",
+  "healthUrl": "http://127.0.0.1:8787/api/health",
+  "outputDir": "demo-output",
+  "finalMp4": "docs/media/TradePilot-demo-90s.mp4",
+  "viewport": { "width": 1440, "height": 900 },
+  "voice": "zh-CN-YunxiNeural",
+  "voiceRate": "-5%",
+  "mode": "record",
+  "scenes": [
+    {
+      "id": "intro",
+      "type": "title",
+      "title": "TradePilot",
+      "subtitle": "外贸全链路 AI 数字员工 · P1 演示",
+      "narration": "外贸一票单证，人工要两小时；退单一次，码头费和交期一起炸。",
+      "holdSeconds": 4,
+      "minDuration": 8
+    },
+    {
+      "id": "home",
+      "type": "browser",
+      "minDuration": 10,
+      "narration": "TradePilot 是外贸全链路 AI 数字员工。今天只演示 P1：上传采购订单，自动出合同和全套单据。",
+      "actions": [
+        { "goto": "/" },
+        { "wait": 4000 }
+      ]
+    },
+    {
+      "id": "run-sample",
+      "type": "browser",
+      "minDuration": 28,
+      "narration": "点击加载样例采购订单。买方迪拜 ABC Trading，五千套 LED 平板灯，CIF 杰贝阿里，总额一万六千美元。",
+      "actions": [
+        { "goto": "/" },
+        { "wait": 1500 },
+        { "click": { "role": "button", "name": "加载样例 PO 并跑通全链路" } },
+        { "waitFor": { "text": "一致性校验通过", "timeout": 180000 } },
+        { "wait": 3000 }
+      ]
+    },
+    {
+      "id": "extract",
+      "type": "browser",
+      "minDuration": 14,
+      "narration": "系统完成解析：字段带置信度；单价乘数量自动校验金额。",
+      "actions": [
+        { "scroll": { "y": 350 } },
+        { "wait": 5000 },
+        { "scroll": { "y": 200 } },
+        { "wait": 4000 }
+      ]
+    },
+    {
+      "id": "docs",
+      "type": "browser",
+      "minDuration": 16,
+      "narration": "以购销合同为唯一数据源，生成中英合同草稿，并一源多单派生 PI、CI、PL。",
+      "actions": [
+        { "scroll": { "y": 400 } },
+        { "wait": 6000 },
+        { "scroll": { "y": 300 } },
+        { "wait": 5000 }
+      ]
+    },
+    {
+      "id": "check",
+      "type": "browser",
+      "minDuration": 12,
+      "narration": "一致性校验全部通过。金额、件数、贸易术语三单同源，冲突会自动阻断。",
+      "actions": [
+        { "scroll": { "y": -500 } },
+        { "wait": 5000 }
+      ]
+    },
+    {
+      "id": "outro",
+      "type": "title",
+      "title": "TradePilot",
+      "subtitle": "让每个中小外贸公司用得起一支 AI 团队",
+      "narration": "人工只需确认风险项。从两小时操作，压缩到十分钟决策。TradePilot，让每个中小外贸公司用得起一支 AI 团队。",
+      "holdSeconds": 5,
+      "minDuration": 12
+    }
+  ]
+}
