@@ -28,9 +28,8 @@ def run_pipeline_task(
     if source_path:
         kwargs["source_path"] = Path(source_path)
     self.update_state(state="STARTED", meta={"progress": 20, "stage": "pipeline"})
-    result = run_pipeline(**kwargs)
-    self.update_state(state="SUCCESS", meta={"progress": 100, "stage": "done"})
-    return result
+    # Do not set SUCCESS manually — that would replace the task return value in the backend.
+    return run_pipeline(**kwargs)
 
 
 def celery_available() -> bool:

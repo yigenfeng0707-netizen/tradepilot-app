@@ -12,12 +12,12 @@ from unittest import mock
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "backend"))
 
-# Ensure local demo defaults before importing app settings
-os.environ.setdefault("AUTH_DISABLED", "1")
-os.environ.setdefault("CELERY_ENABLED", "0")
-# Clear MinIO so local path is exercised
+# Ensure local demo defaults before importing app settings.
+# Force empty MinIO keys so pydantic env_file (.env live enable) cannot flip this smoke to minio.
+os.environ["AUTH_DISABLED"] = "1"
+os.environ["CELERY_ENABLED"] = "0"
 for k in ("MINIO_ENDPOINT", "MINIO_ACCESS_KEY", "MINIO_SECRET_KEY"):
-    os.environ.pop(k, None)
+    os.environ[k] = ""
 
 
 def main() -> int:

@@ -16,6 +16,7 @@
 | K | **90s 演示成片** `docs/media/TradePilot-demo-90s.mp4`（~93.5s，CDP 录屏 + edge-tts + ffmpeg） |
 | L | **P2 财务 MVP**：收付汇核销 · 退税三态 · 毛利报表（`P2_OK`） |
 | M | **P2+ 基础设施**：JWT（可关）· Celery/Redis（可关）· MinIO（可关）· `/ws/tasks/{id}`（`INFRA_OK`） |
+| N | **P2+ live Docker**：`docker-compose.yml` Redis+MinIO · `smoke_infra_live.py`（`INFRA_LIVE_OK`） |
 
 ## 验收
 
@@ -23,6 +24,7 @@
 - `python scripts/smoke_image.py` → `IMAGE_LOOP_OK`
 - `python scripts/smoke_p2.py` → `P2_OK`
 - `python scripts/smoke_infra.py` → `INFRA_OK`
+- `docker compose up -d` 后：`python scripts/smoke_infra_live.py` → `INFRA_LIVE_OK`（需 Celery worker + API）
 - 流水线返回 `pdf_paths` 含 5 个 PDF；前端可点「PDF」下载
 - Demo：http://127.0.0.1:8787 （P1 结果下接 P2 财务台账）
 - 90s 成片：`docs/media/TradePilot-demo-90s.mp4`（ffprobe ~93.5s）
@@ -54,8 +56,9 @@
 | JWT | `AUTH_DISABLED=1` | `POST /api/auth/login`；保护流水线/财务写/文件 |
 | Celery | `CELERY_ENABLED=0` | `?async=1` 入队；`GET /api/tasks/{id}`；`WS /ws/tasks/{id}` |
 | MinIO | 未配 endpoint | 本地 `data/` + 可选镜像上传 |
+| Compose | 可选 | `docker compose up -d` → Redis `:6379` · MinIO `:9000/:9001` · 桶 `tradepilot` |
 
-详见 [`docs/P2plus-infra.md`](P2plus-infra.md)。
+Live 开启：复制 `.env.example` 中 Celery/MinIO 段到本地 `.env`（**勿提交**），起 worker（Windows `--pool=solo`）与 API。详见 [`docs/P2plus-infra.md`](P2plus-infra.md)。
 
 ## 90s 成片说明（2026-10-01）
 
