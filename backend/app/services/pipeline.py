@@ -22,6 +22,7 @@ from .generator import (
 )
 from .llm import LLMClient
 from .pdf_export import export_bundle_pdfs
+from . import storage as object_store
 
 
 def _slug(s: str) -> str:
@@ -106,6 +107,12 @@ def run_pipeline(
     else:
         upload_path.write_text(raw_text, encoding="utf-8")
         mime = "text/plain"
+
+    # Optional MinIO mirror (local file always kept)
+    storage_meta = object_store.put_file(upload_path)
+    ocr_txt = settings.upload_dir / f"{upload_path.stem}.ocr.txt"
+    if ocr_txt.exists():
+        object_store.put_file(ocr_txt)
 
     with get_conn() as conn:
         doc_id = execute(
@@ -385,6 +392,8 @@ def run_pipeline(
                 contract_md=contract["body_md"],
                 docs=docs,
             )
+            for _k, p in list(pdf_paths.items()):
+                object_store.put_file(p)
             append_audit(
                 conn,
                 tenant_id=tenant_id,
@@ -392,7 +401,7 @@ def run_pipeline(
                 action="export_pdf",
                 entity_type="order",
                 entity_id=str(order_id),
-                detail={"pdfs": list(pdf_paths.keys())},
+                detail={"pdfs": list(pdf_paths.keys()), "storage": object_store.storage_status()},
             )
         except Exception as pdf_exc:  # noqa: BLE001
             append_audit(
@@ -486,6 +495,7 @@ def run_pipeline(
             "llm_mode": llm.mode,
             "llm_provider": getattr(llm.settings, "provider_label", None),
             "read_meta": read_meta,
+            "storage": {**object_store.storage_status(), "upload": storage_meta},
         }
 
 

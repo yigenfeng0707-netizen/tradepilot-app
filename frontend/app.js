@@ -1,6 +1,93 @@
 const $ = (id) => document.getElementById(id);
 
+const TOKEN_KEY = "tradepilot_jwt";
 let currentOrderId = null;
+let authRequired = false;
+
+function getToken() {
+  try {
+    return localStorage.getItem(TOKEN_KEY) || "";
+  } catch {
+    return "";
+  }
+}
+
+function setToken(token) {
+  try {
+    if (token) localStorage.setItem(TOKEN_KEY, token);
+    else localStorage.removeItem(TOKEN_KEY);
+  } catch {
+    /* ignore */
+  }
+}
+
+function authHeaders(extra = {}) {
+  const h = { ...extra };
+  const t = getToken();
+  if (t) h.Authorization = `Bearer ${t}`;
+  return h;
+}
+
+async function apiFetch(url, options = {}) {
+  const opts = { ...options };
+  opts.headers = authHeaders(opts.headers || {});
+  return fetch(url, opts);
+}
+
+async function ensureAuth() {
+  const el = $("auth-pill");
+  try {
+    const r = await fetch("/api/health");
+    const j = await r.json();
+    authRequired = !!j.auth_required;
+    if (!authRequired) {
+      if (el) {
+        el.textContent = "鉴权关闭";
+        el.className = "pill muted";
+        el.title = "AUTH_DISABLED=1 或 JWT_SECRET 未设";
+      }
+      return true;
+    }
+    if (getToken()) {
+      const me = await apiFetch("/api/auth/me");
+      if (me.ok) {
+        const body = await me.json();
+        if (el) {
+          el.textContent = `已登录 · ${body.user?.sub || "user"}`;
+          el.className = "pill ok";
+        }
+        return true;
+      }
+      setToken("");
+    }
+    const login = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: "demo", password: "demo" }),
+    });
+    const lj = await login.json();
+    if (!login.ok) {
+      if (el) {
+        el.textContent = "需登录";
+        el.className = "pill warn";
+        el.title = lj.detail || "login failed";
+      }
+      return false;
+    }
+    setToken(lj.access_token);
+    if (el) {
+      el.textContent = `已登录 · ${lj.user?.username || "demo"}`;
+      el.className = "pill ok";
+    }
+    return true;
+  } catch (e) {
+    if (el) {
+      el.textContent = "鉴权异常";
+      el.className = "pill warn";
+    }
+    return !authRequired;
+  }
+}
 
 async function refreshHealth() {
   const el = $("health");
@@ -50,6 +137,10 @@ function money(cur, n) {
   })}`;
 }
 
+function fileHref(path) {
+  return `/api/files?path=${encodeURIComponent(path)}`;
+}
+
 function renderResult(data) {
   $("results").classList.remove("hidden");
   const steps = [
@@ -88,10 +179,10 @@ function renderResult(data) {
   $("docs").innerHTML = (data.generated_docs || [])
     .map((d) => {
       const pdf = d.pdf_path
-        ? `<a class="file-link" href="/api/files?path=${encodeURIComponent(d.pdf_path)}" target="_blank" rel="noopener">PDF</a>`
+        ? `<a class="file-link" href="${fileHref(d.pdf_path)}" target="_blank" rel="noopener">PDF</a>`
         : "";
       const md = d.path
-        ? `<a class="file-link" href="/api/files?path=${encodeURIComponent(d.path)}" target="_blank" rel="noopener">MD</a>`
+        ? `<a class="file-link" href="${fileHref(d.path)}" target="_blank" rel="noopener">MD</a>`
         : "";
       return `<div class="doc-row"><strong>${d.doc_type.toUpperCase()}</strong> ${pdf} ${md}
         <code>${d.path || ""}</code></div>
@@ -103,7 +194,7 @@ function renderResult(data) {
   if (contractPdf) {
     $("contract").insertAdjacentHTML(
       "beforebegin",
-      `<p class="file-row"><a class="file-link" href="/api/files?path=${encodeURIComponent(contractPdf)}" target="_blank" rel="noopener">下载合同 PDF</a></p>`
+      `<p class="file-row"><a class="file-link" href="${fileHref(contractPdf)}" target="_blank" rel="noopener">下载合同 PDF</a></p>`
     );
   }
   $("audit").textContent = JSON.stringify(data.audit_tail || [], null, 2);
@@ -183,7 +274,7 @@ function renderFinance(bundle) {
       const id = btn.getAttribute("data-rebate-id");
       const status = btn.getAttribute("data-next");
       try {
-        const r = await fetch(`/api/finance/rebates/${id}`, {
+        const r = await apiFetch(`/api/finance/rebates/${id}`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ status }),
@@ -211,8 +302,8 @@ async function loadFinance(orderId) {
   if (!orderId) return;
   try {
     const [bundleRes, marginRes] = await Promise.all([
-      fetch(`/api/finance/orders/${orderId}`),
-      fetch("/api/finance/margin?limit=8"),
+      apiFetch(`/api/finance/orders/${orderId}`),
+      apiFetch("/api/finance/margin?limit=8"),
     ]);
     const bundle = await bundleRes.json();
     if (!bundleRes.ok) throw new Error(bundle.detail || "财务加载失败");
@@ -252,7 +343,7 @@ async function seedFinance() {
     return;
   }
   try {
-    const r = await fetch(`/api/finance/demo-seed/${currentOrderId}`, { method: "POST" });
+    const r = await apiFetch(`/api/finance/demo-seed/${currentOrderId}`, { method: "POST" });
     const j = await r.json();
     if (!r.ok) throw new Error(j.detail || "写入失败");
     showStatus(
@@ -267,7 +358,7 @@ async function seedFinance() {
 async function createRebate() {
   if (!currentOrderId) return;
   try {
-    const r = await fetch("/api/finance/rebates", {
+    const r = await apiFetch("/api/finance/rebates", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ order_id: currentOrderId, status: "pending" }),
@@ -293,7 +384,7 @@ async function submitPayment(e) {
     return;
   }
   try {
-    const r = await fetch("/api/finance/payments", {
+    const r = await apiFetch("/api/finance/payments", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -316,7 +407,7 @@ async function runSample() {
   setBusy(true);
   showStatus("正在跑通样例 PO-2026-0913…");
   try {
-    const r = await fetch("/api/orders/sample", { method: "POST" });
+    const r = await apiFetch("/api/orders/sample", { method: "POST" });
     const j = await r.json();
     if (!r.ok) throw new Error(j.detail || "失败");
     showStatus(
@@ -334,7 +425,7 @@ async function runSampleImage() {
   setBusy(true);
   showStatus("正在 OCR 样例扫描件并用魔搭模型抽取…");
   try {
-    const r = await fetch("/api/orders/sample-image", { method: "POST" });
+    const r = await apiFetch("/api/orders/sample-image", { method: "POST" });
     const j = await r.json();
     if (!r.ok) throw new Error(j.detail || "失败");
     const kind = j.read_meta?.source_kind || "image_ocr";
@@ -358,7 +449,7 @@ async function runText() {
   setBusy(true);
   showStatus("正在解析粘贴文本…");
   try {
-    const r = await fetch("/api/orders/pipeline/text", {
+    const r = await apiFetch("/api/orders/pipeline/text", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text, filename: "pasted-po.txt" }),
@@ -380,7 +471,7 @@ async function runFile(file) {
   try {
     const fd = new FormData();
     fd.append("file", file);
-    const r = await fetch("/api/orders/pipeline", { method: "POST", body: fd });
+    const r = await apiFetch("/api/orders/pipeline", { method: "POST", body: fd });
     const j = await r.json();
     if (!r.ok) throw new Error(j.detail || "失败");
     showStatus(`完成 · 订单 ${j.order_no}`);
@@ -406,4 +497,7 @@ $("btn-finance-refresh").addEventListener("click", () => loadFinance(currentOrde
 $("btn-rebate-create").addEventListener("click", createRebate);
 $("pay-form").addEventListener("submit", submitPayment);
 
-refreshHealth();
+(async () => {
+  await ensureAuth();
+  await refreshHealth();
+})();

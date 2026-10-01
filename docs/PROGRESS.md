@@ -15,16 +15,19 @@
 | J | **创空间静态产品页包** `deploy-studio/`（Studio Running） |
 | K | **90s 演示成片** `docs/media/TradePilot-demo-90s.mp4`（~93.5s，CDP 录屏 + edge-tts + ffmpeg） |
 | L | **P2 财务 MVP**：收付汇核销 · 退税三态 · 毛利报表（`P2_OK`） |
+| M | **P2+ 基础设施**：JWT（可关）· Celery/Redis（可关）· MinIO（可关）· `/ws/tasks/{id}`（`INFRA_OK`） |
 
 ## 验收
 
 - `python scripts/smoke_loop.py` → `CLOSED_LOOP_OK`
 - `python scripts/smoke_image.py` → `IMAGE_LOOP_OK`
 - `python scripts/smoke_p2.py` → `P2_OK`
+- `python scripts/smoke_infra.py` → `INFRA_OK`
 - 流水线返回 `pdf_paths` 含 5 个 PDF；前端可点「PDF」下载
 - Demo：http://127.0.0.1:8787 （P1 结果下接 P2 财务台账）
 - 90s 成片：`docs/media/TradePilot-demo-90s.mp4`（ffprobe ~93.5s）
 - P2 用例：[`docs/P2-验收用例.md`](P2-验收用例.md)
+- P2+ 基建：[`docs/P2plus-infra.md`](P2plus-infra.md)
 
 ## P2 已交付
 
@@ -35,15 +38,24 @@
 | 毛利报表 | `/api/finance/margin`（演示成本率 72% + HS 退税估算） |
 | 一键演示 | `/api/finance/demo-seed/{order_id}` |
 
-## 仍缺 / P2+ later
+## 仍缺 / later
 
 | 项 | 说明 |
 |----|------|
 | 魔搭原生 VL | API 空 choices；已用 OCR+Qwen 替代 |
-| Celery / Redis | 未做（同步流水线足够演示） |
-| WebSocket / JWT / MinIO | 未做 |
 | Playwright RPA | 未做（90s 成片用 CDP 录屏，非业务 RPA） |
 | 真实采购成本 | 毛利用演示成本率，非 ERP 进销存 |
+| 鉴权开启时文件链 | 默认 AUTH_DISABLED；开启后 `<a href>` 需带 Bearer（可用 fetch 下载） |
+
+## P2+ 已交付（可选开启）
+
+| 能力 | 默认 | 说明 |
+|------|------|------|
+| JWT | `AUTH_DISABLED=1` | `POST /api/auth/login`；保护流水线/财务写/文件 |
+| Celery | `CELERY_ENABLED=0` | `?async=1` 入队；`GET /api/tasks/{id}`；`WS /ws/tasks/{id}` |
+| MinIO | 未配 endpoint | 本地 `data/` + 可选镜像上传 |
+
+详见 [`docs/P2plus-infra.md`](P2plus-infra.md)。
 
 ## 90s 成片说明（2026-10-01）
 

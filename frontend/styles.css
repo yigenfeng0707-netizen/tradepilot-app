@@ -64,7 +64,8 @@ body {
 }
 .pill.ok { border-color: #9bcbb8; color: var(--ok); }
 .pill.warn { border-color: #e2b48a; color: var(--accent-2); }
-.pill.muted { color: var(--muted); }
+.top-right { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+
 
 main { max-width: 1120px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
 

@@ -1,0 +1,1 @@
+"""TradePilot application package."""
