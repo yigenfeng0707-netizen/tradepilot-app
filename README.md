@@ -1,5 +1,8 @@
 # TradePilot 产品 Demo（P1 + P2 + P2+ 可选基建）
 
+**一句话**：TradePilot 把外贸 PO 变成可校验的合同与一源多单，并接上收付/退税财务台账——AI 出草稿，人做决策。  
+**参赛材料入口**：[`docs/提交清单.md`](docs/提交清单.md)（GitHub / 创空间 / 本地 / 90s 视频 / 手册 / 账号）。
+
 外贸全链路 AI 数字员工 · **P1 主链路**：上传 PO → 解析 → 合同草稿 → 一源多单（PI/CI/PL）→ 一致性校验。  
 **P2 财务**：收付汇核销 · 退税三态台账 · 订单毛利报表（接在 P1 结果下方）。  
 **P2+**：JWT / Celery+Redis / MinIO / 轻量 WebSocket — **默认关闭，优雅降级**（见 [`docs/P2plus-infra.md`](docs/P2plus-infra.md)）。
@@ -92,15 +95,11 @@ tradepilot-app/
 
 ## 设计物与演示材料
 
-- [`docs/P1-规格摘要.md`](docs/P1-规格摘要.md)  
-- [`docs/P1-任务拆解.md`](docs/P1-任务拆解.md)  
-- [`docs/P1-验收用例.md`](docs/P1-验收用例.md)  
-- [`docs/P2-验收用例.md`](docs/P2-验收用例.md)  
-- [`docs/P2plus-infra.md`](docs/P2plus-infra.md)  
-- [`docs/演示-90s分镜脚本.md`](docs/演示-90s分镜脚本.md)  
-- [`docs/路演逐字稿-10分钟.md`](docs/路演逐字稿-10分钟.md)  
-- [`docs/PROGRESS.md`](docs/PROGRESS.md)  
-- [`docs/media/TradePilot-demo-90s.mp4`](docs/media/TradePilot-demo-90s.mp4)
+- [`docs/提交清单.md`](docs/提交清单.md) · [`docs/用户手册.md`](docs/用户手册.md) · [`docs/contest-rules-notes.md`](docs/contest-rules-notes.md)  
+- [`docs/P1-规格摘要.md`](docs/P1-规格摘要.md) · [`docs/P1-任务拆解.md`](docs/P1-任务拆解.md) · [`docs/P1-验收用例.md`](docs/P1-验收用例.md)  
+- [`docs/P2-验收用例.md`](docs/P2-验收用例.md) · [`docs/P2plus-infra.md`](docs/P2plus-infra.md)  
+- [`docs/演示-90s分镜脚本.md`](docs/演示-90s分镜脚本.md) · [`docs/路演逐字稿-10分钟.md`](docs/路演逐字稿-10分钟.md)  
+- [`docs/PROGRESS.md`](docs/PROGRESS.md) · [`docs/media/TradePilot-demo-90s.mp4`](docs/media/TradePilot-demo-90s.mp4)
 
 ## 与方案书技术栈的关系
 

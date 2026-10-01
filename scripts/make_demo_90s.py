@@ -5,6 +5,7 @@ Uses connect_over_cdp (port 9222) — never downloads Playwright Chromium.
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import time
 import urllib.request
@@ -28,44 +29,44 @@ SCENES = [
         "id": "intro",
         "kind": "title",
         "title": "TradePilot",
-        "subtitle": "外贸全链路 AI 数字员工 · P1",
+        "subtitle": "外贸全链路 AI 数字员工 · P1 + P2",
         "narration": "外贸一票单证，人工要两小时；退单一次，码头费和交期一起炸。",
         "hold": 8,
     },
     {
         "id": "home",
         "kind": "browser",
-        "narration": "TradePilot 是外贸全链路 AI 数字员工。今天只演示 P1：上传采购订单，自动出合同和全套单据。",
+        "narration": "TradePilot 是外贸全链路 AI 数字员工。先看 P1：上传采购订单，自动出合同和全套单据。",
         "actions": "home",
-        "hold": 10,
+        "hold": 8,
     },
     {
         "id": "run",
         "kind": "browser",
-        "narration": "点击加载样例采购订单。买方迪拜 ABC Trading，五千套 LED 平板灯，CIF 杰贝阿里，总额一万六千美元。",
+        "narration": "点击加载样例采购订单。买方迪拜 ABC Trading，五千套 LED，CIF 杰贝阿里，总额一万六千美元。",
         "actions": "run",
-        "hold": 18,
+        "hold": 16,
     },
     {
         "id": "extract",
         "kind": "browser",
         "narration": "系统完成解析：字段带置信度；单价乘数量自动校验金额。",
         "actions": "extract",
-        "hold": 12,
+        "hold": 10,
     },
     {
         "id": "docs",
         "kind": "browser",
-        "narration": "以购销合同为唯一数据源，生成中英合同草稿，并一源多单派生 PI、CI、PL。",
+        "narration": "以购销合同为唯一数据源，生成中英合同，并一源多单派生 PI、CI、PL；一致性校验通过。",
         "actions": "docs",
-        "hold": 14,
+        "hold": 12,
     },
     {
-        "id": "check",
+        "id": "finance",
         "kind": "browser",
-        "narration": "一致性校验全部通过。金额、件数、贸易术语三单同源，冲突会自动阻断。",
-        "actions": "check",
-        "hold": 12,
+        "narration": "进入 P2 财务台账：写入演示收付与待申报退税，可见部分核销与毛利一瞥。",
+        "actions": "finance",
+        "hold": 16,
     },
     {
         "id": "outro",
@@ -309,12 +310,42 @@ def record_browser_continuous(browser_holds: list[tuple[str, float]]) -> tuple[P
                 time.sleep(hold / 2)
             elif sid == "docs":
                 ensure_results(page)
-                page.mouse.wheel(0, 700)
-                time.sleep(hold)
-            elif sid == "check":
+                page.mouse.wheel(0, 500)
+                time.sleep(hold / 2)
+                # Highlight consistency if present
+                try:
+                    page.locator("#consistency").scroll_into_view_if_needed(timeout=3000)
+                except Exception:
+                    pass
+                time.sleep(hold / 2)
+            elif sid == "finance":
                 ensure_results(page)
-                page.mouse.wheel(0, -200)
-                time.sleep(hold)
+                try:
+                    page.locator("#p2").scroll_into_view_if_needed(timeout=5000)
+                except Exception:
+                    page.mouse.wheel(0, 900)
+                time.sleep(1.0)
+                try:
+                    if page.locator("#btn-finance-seed").is_visible():
+                        page.locator("#btn-finance-seed").click()
+                        page.wait_for_timeout(1500)
+                except Exception:
+                    pass
+                try:
+                    page.locator("#p2-settlement").scroll_into_view_if_needed(timeout=3000)
+                except Exception:
+                    page.mouse.wheel(0, 200)
+                time.sleep(hold / 3)
+                try:
+                    page.locator("#p2-rebates").scroll_into_view_if_needed(timeout=3000)
+                except Exception:
+                    page.mouse.wheel(0, 250)
+                time.sleep(hold / 3)
+                try:
+                    page.locator("#p2-margin").scroll_into_view_if_needed(timeout=3000)
+                except Exception:
+                    page.mouse.wheel(0, 250)
+                time.sleep(hold / 3)
 
         total = time.monotonic() - t0
         vid = page.video
@@ -396,13 +427,34 @@ def main() -> int:
     browser_scenes = [(s["id"], holds[s["id"]]) for s in SCENES if s["kind"] == "browser"]
     full = SEG / "browser_full.mp4"
     marks_path = SEG / "browser_marks.json"
-    reuse = full.exists() and marks_path.exists() and full.stat().st_size > 100_000
+    force = os.environ.get("FORCE_RERECORD", "").strip() in ("1", "true", "yes")
+    scene_ids = [s[0] for s in browser_scenes]
+    reuse = (
+        not force
+        and full.exists()
+        and marks_path.exists()
+        and full.stat().st_size > 100_000
+    )
+    if reuse:
+        marks_data = json.loads(marks_path.read_text(encoding="utf-8"))
+        prev_ids = [r[0] for r in marks_data.get("ranges") or []]
+        if prev_ids != scene_ids:
+            print("RECORD_CDP scene list changed; re-record", prev_ids, "->", scene_ids, flush=True)
+            reuse = False
     if reuse:
         print("RECORD_CDP reuse existing browser_full.mp4", flush=True)
         marks_data = json.loads(marks_path.read_text(encoding="utf-8"))
         ranges = [tuple(x) for x in marks_data["ranges"]]
     else:
-        print("RECORD_CDP continuous", [s[0] for s in browser_scenes], flush=True)
+        # Drop stale TTS/browser caches that predate P2 scene list
+        for stale in SEG.glob("0*_*.mp3"):
+            # Keep only if matching current scene ids by suffix later; remove check/old
+            pass
+        for stale_name in ("03_check.mp3", "04_check.mp3", "05_check.mp3", "browser_check_v.mp4"):
+            p = SEG / stale_name
+            if p.exists():
+                p.unlink()
+        print("RECORD_CDP continuous", scene_ids, flush=True)
         full, ranges = record_browser_continuous(browser_scenes)
 
     browser_raw: dict[str, Path] = {}

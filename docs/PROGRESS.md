@@ -1,6 +1,6 @@
 # TradePilot 进度说明（统一）
 
-**更新日期**：2026-10-01  
+**更新日期**：2026-10-01（参赛材料收口 + 90s 含 P2 重录 + 创空间文案同步）  
 **落点目录**：`tradepilot-app/`
 
 ## 已完成
@@ -13,10 +13,11 @@
 | H | 扫描件 RapidOCR → 魔搭抽取（`IMAGE_LOOP_OK`） |
 | I | **PDF 精美出单**（合同 + PI/CI/PL/报关，`PDF_OK`） |
 | J | **创空间静态产品页包** `deploy-studio/`（Studio Running） |
-| K | **90s 演示成片** `docs/media/TradePilot-demo-90s.mp4`（~93.5s，CDP 录屏 + edge-tts + ffmpeg） |
+| K | **90s 演示成片** `docs/media/TradePilot-demo-90s.mp4`（CDP 录屏 + edge-tts + ffmpeg；含 P2） |
 | L | **P2 财务 MVP**：收付汇核销 · 退税三态 · 毛利报表（`P2_OK`） |
 | M | **P2+ 基础设施**：JWT（可关）· Celery/Redis（可关）· MinIO（可关）· `/ws/tasks/{id}`（`INFRA_OK`） |
 | N | **P2+ live Docker**：`docker-compose.yml` Redis+MinIO · `smoke_infra_live.py`（`INFRA_LIVE_OK`） |
+| O | **参赛材料收口**：`docs/提交清单.md` · `docs/用户手册.md` · `contest-rules-notes.md` · 路演/分镜对齐现实 |
 
 ## 验收
 
@@ -27,9 +28,8 @@
 - `docker compose up -d` 后：`python scripts/smoke_infra_live.py` → `INFRA_LIVE_OK`（需 Celery worker + API）
 - 流水线返回 `pdf_paths` 含 5 个 PDF；前端可点「PDF」下载
 - Demo：http://127.0.0.1:8787 （P1 结果下接 P2 财务台账）
-- 90s 成片：`docs/media/TradePilot-demo-90s.mp4`（ffprobe ~93.5s）
-- P2 用例：[`docs/P2-验收用例.md`](P2-验收用例.md)
-- P2+ 基建：[`docs/P2plus-infra.md`](P2plus-infra.md)
+- 90s 成片：`docs/media/TradePilot-demo-90s.mp4`
+- 提交入口：[`docs/提交清单.md`](提交清单.md)
 
 ## P2 已交付
 
@@ -62,26 +62,17 @@ Live 开启：复制 `.env.example` 中 Celery/MinIO 段到本地 `.env`（**勿
 
 ## 90s 成片说明（2026-10-01）
 
-- 脚本：`scripts/make_demo_90s.py`
-- 录屏：Playwright `connect_over_cdp(http://127.0.0.1:9222)`，**不**下载 Chromium；连续录一次样例全链路
+- 脚本：`scripts/make_demo_90s.py`（含 P2 财务场景：seed → settlement/rebate/margin）
+- 录屏：Playwright `connect_over_cdp(http://127.0.0.1:9222)`，**不**下载 Chromium
 - TTS：`edge-tts --rate=-5%`（equals 形式）
-- 片头：可选拼接 `intro-5s-wan-moli.mp4`（补静音轨后 concat）
-- 健康检查：`/api/health`
-
-## 魔搭图/视频（魔粒）
-
-| 能力 | 通道 | 结果 |
-|------|------|------|
-| 生图 | API `Qwen/Qwen-Image`（扣魔粒） | ✅ `docs/media/frame-hero-moli.png` |
-| 视频 | 网页 AIGC（API Wan 现报 Invalid model provider） | ✅ `docs/media/intro-5s-wan-moli.mp4` |
-| 90s 成片 | 本机 CDP + TTS + ffmpeg | ✅ `docs/media/TradePilot-demo-90s.mp4` |
+- 片头：可选拼接 `intro-5s-wan-moli.mp4`
+- 分镜：[`docs/演示-90s分镜脚本.md`](演示-90s分镜脚本.md)
 
 ## 创空间部署
 
 - Studio: https://www.modelscope.cn/studios/gsym236998/tradepilot-demo  
 - Demo: https://gsym236998-tradepilot-demo.ms.show  
 - 本地完整版仍用 `uvicorn`；线上为样例回放（Docker 创空间仅 PUT `index.html`）。
-- **2026-10-01 深夜**：已 redeploy P2 静态财务台账（`P2-STATIC-20261001`）  
-  - PUT `deploy-studio/index.html` ✅ → Deploy HTTP 200 → Status Running  
-  - 核验：页脚/健康 pill 含 `P2-STATIC-20261001`；回放后 P2 可见；种子收付→部分核销 + 待申报退税  
-  - 线上无 FastAPI：收付/退税/毛利为浏览器内本地状态演示（完整 API 仍在本地 `8787`）
+- **2026-10-01 交付标记**：`P2-STATIC-DELIVER-20261001`  
+  - 页脚/健康 pill 标明：线上为静态演示；完整 FastAPI（P1+P2+可选 Celery/MinIO）见本地/仓库  
+  - 线上无 FastAPI：收付/退税/毛利为浏览器内本地状态演示
